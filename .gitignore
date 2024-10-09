@@ -58,3 +58,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### C# ###
+.vs/
+bin/
+obj/
+*.sln
