@@ -20,7 +20,8 @@ public class Main {
             long startTime = System.nanoTime();
 
             Matcher matcher = pattern.matcher(string);
-            matcher.matches();
+            while(matcher.find()) {
+            }
 
             long endTime = System.nanoTime();
             long endMemory = runtime.totalMemory() - runtime.freeMemory();
