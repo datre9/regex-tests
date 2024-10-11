@@ -8,19 +8,23 @@ sr.Close();
 
 StringBuilder toWrite = new StringBuilder("id;time(ns);memory(B)\n");
 
-Regex.CacheSize = 0;
 Regex regex = new Regex("finn|huckleberry", RegexOptions.IgnoreCase);
 
-GC.Collect();
-GC.WaitForPendingFinalizers();
-long startMemory = GC.GetTotalMemory(true);
-long startTime = DateTime.Now.Ticks;
+for (int i = 0; i < 1000; i++) {
+	long startMemory = GC.GetTotalMemory(true);
+	long startTime = DateTime.Now.Ticks;
 
-regex.Matches(s);
+	//.Matches possibly has some cache that greatly reduces the compute time by orders of magnitude
+	//the first value of memory seems to be correct, the others are always incorrect
+	//regex.Matches(s);
+	regex.Count(s);
 
-long endTime = DateTime.Now.Ticks;
-long endMemory = GC.GetTotalMemory(true);
+	long endTime = DateTime.Now.Ticks;
+	long endMemory = GC.GetTotalMemory(true);
 
-toWrite.Append(0).Append(";").Append((endTime - startTime) * 100).Append(";").Append(endMemory - startMemory).Append("\n");
+	toWrite.Append(0).Append(";").Append((endTime - startTime) * 100).Append(";").Append(endMemory - startMemory).Append("\n");
+}
 
-Console.WriteLine(toWrite);
+StreamWriter sw = new StreamWriter("../../../results.csv");
+sw.WriteLine(toWrite);
+sw.Close();
