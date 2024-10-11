@@ -22,7 +22,7 @@ for (int i = 0; i < 1000; i++) {
 	long endTime = DateTime.Now.Ticks;
 	long endMemory = GC.GetTotalMemory(true);
 
-	toWrite.Append(0).Append(";").Append((endTime - startTime) * 100).Append(";").Append(endMemory - startMemory).Append("\n");
+	toWrite.Append(i).Append(";").Append((endTime - startTime) * 100).Append(";").Append(endMemory - startMemory).Append("\n");
 }
 
 StreamWriter sw = new StreamWriter("../../../results.csv");

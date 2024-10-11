@@ -13,7 +13,7 @@ public class Main {
         Pattern pattern = Pattern.compile("finn|huckleberry", Pattern.CASE_INSENSITIVE);
 
         //number of test repeats
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             //garbage collector to avoid wierd data
             runtime.gc();
             long startMemory = runtime.totalMemory() - runtime.freeMemory();

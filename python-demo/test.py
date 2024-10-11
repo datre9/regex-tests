@@ -10,7 +10,7 @@ with open(file_path, "r", encoding="utf-8") as file:
 toWrite = "id;time(ns);memory(B)\n"
 regex = re.compile("finn|huckleberry", re.IGNORECASE)
 
-for i in range(100):
+for i in range(1000):
     tracemalloc.start()
     startTime = time.time_ns()
     
