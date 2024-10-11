@@ -1,4 +1,5 @@
-results.csv
+*.csv
+*.xlsx
 
 # Compiled class file
 *.class
