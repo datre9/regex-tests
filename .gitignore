@@ -1,6 +1,7 @@
 *.csv
 *.xlsx
 *.exe
+*.dll
 
 # Compiled class file
 *.class
