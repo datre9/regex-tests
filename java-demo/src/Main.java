@@ -10,7 +10,7 @@ public class Main {
         //used for getting current RAM usage
         Runtime runtime = Runtime.getRuntime();
 
-        Pattern pattern = Pattern.compile("finn|huckleberry", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("Finn|Huckleberry", 0);
 
         //number of test repeats
         for (int i = 0; i < 1000; i++) {

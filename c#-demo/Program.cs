@@ -8,7 +8,7 @@ sr.Close();
 
 StringBuilder toWrite = new StringBuilder("id;time(ns);memory(B)\n");
 
-Regex regex = new Regex("finn|huckleberry", RegexOptions.IgnoreCase);
+Regex regex = new Regex("Finn|Huckleberry", 0);
 
 for (int i = 0; i < 1000; i++) {
 	long startMemory = GC.GetTotalMemory(true);

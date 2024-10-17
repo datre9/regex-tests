@@ -8,7 +8,7 @@ with open(file_path, "r", encoding="utf-8") as file:
     string = file.read()
 
 toWrite = "id;time(ns);memory(B)\n"
-regex = re.compile("finn|huckleberry", re.IGNORECASE)
+regex = re.compile("Finn|Huckleberry", 0)
 
 for i in range(1000):
     tracemalloc.start()

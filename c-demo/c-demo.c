@@ -13,14 +13,14 @@ char *stringAppend(char *s1, char *s2);
 int main()
 {
     char *data = readFile("../adventures-of-huckleberry-finn.txt");
-    char *pattern = "finn|huckleberry";
+    char *pattern = "Finn|Huckleberry";
     char *toWrite = "id;time(ns);memory(B)\n";
 
     PCRE2_SIZE offset = 0;
     PCRE2_SIZE *ovector;
     int errorcode;
     PCRE2_SIZE erroroffset;
-    pcre2_code_8 *re = pcre2_compile_8((PCRE2_SPTR8)pattern, PCRE2_ZERO_TERMINATED, PCRE2_CASELESS, &errorcode, &erroroffset, NULL);
+    pcre2_code_8 *re = pcre2_compile_8((PCRE2_SPTR8)pattern, PCRE2_ZERO_TERMINATED, 0, &errorcode, &erroroffset, NULL);
     pcre2_match_data_8 *match_data = pcre2_match_data_create_from_pattern_8(re, NULL);
     int length = strlen(data);
 
