@@ -1,6 +1,6 @@
 *.csv
 *.xlsx
-*.exe
+*.exe*
 *.dll
 
 # Compiled class file
@@ -67,3 +67,12 @@ bin/
 bin/
 obj/
 *.sln
+
+### C++ ###
+*.vcxproj*
+*.ilk
+*.obj
+*.lastbuildstate
+*.tlog
+*.idb
+*.pdb
