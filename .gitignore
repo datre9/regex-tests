@@ -76,3 +76,4 @@ obj/
 *.tlog
 *.idb
 *.pdb
+*.TMP
