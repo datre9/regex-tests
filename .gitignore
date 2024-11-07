@@ -77,3 +77,10 @@ obj/
 *.idb
 *.pdb
 *.TMP
+
+### Rust ###
+debug/
+target/
+Cargo.lock
+**/*.rs.bk
+*.pdb
