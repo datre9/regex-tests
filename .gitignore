@@ -77,6 +77,8 @@ obj/
 *.idb
 *.pdb
 *.TMP
+*.iobj
+*.ipdb
 
 ### Rust ###
 debug/
