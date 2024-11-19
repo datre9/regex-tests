@@ -11,13 +11,14 @@ StringBuilder toWrite = new StringBuilder("id;time(ns);memory(B)\n");
 Regex regex = new Regex("Finn|Huckleberry", 0);
 
 for (int i = 0; i < 1000; i++) {
+	Match match = regex.Match(s);
+
 	long startMemory = GC.GetTotalMemory(true);
 	long startTime = DateTime.Now.Ticks;
 
-	//.Matches possibly has some cache that greatly reduces the compute time by orders of magnitude
-	//the first value of memory seems to be correct, the others are always incorrect
-	//regex.Matches(s);
-	regex.Count(s);
+	while (match.Success) {
+		match = match.NextMatch();
+	}
 
 	long endTime = DateTime.Now.Ticks;
 	long endMemory = GC.GetTotalMemory(true);
