@@ -4,33 +4,39 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
+    static StringBuilder toWrite = new StringBuilder();
+
     public static void main(String[] args) throws IOException {
-        String string = GetStringFromFile.getStringFromFile("../adventures-of-huckleberry-finn.txt");
-        StringBuilder toWrite = new StringBuilder("id;time(ns);memory(B)\n");
-        //used for getting current RAM usage
-        Runtime runtime = Runtime.getRuntime();
+        String abc1 = GetStringFromFile.getStringFromFile("../abc1.txt");
+        String abc2 = GetStringFromFile.getStringFromFile("../abc2.txt");
+        String abc3 = GetStringFromFile.getStringFromFile("../abc3.txt");
 
-        Pattern pattern = Pattern.compile("Finn|Huckleberry", 0);
+        Pattern regexKMP = Pattern.compile("(ab)+", 0);
 
-        //number of test repeats
-        for (int i = 0; i < 1000; i++) {
-            //garbage collector to avoid wierd data
-            runtime.gc();
-            long startMemory = runtime.totalMemory() - runtime.freeMemory();
-            long startTime = System.nanoTime();
 
-            Matcher matcher = pattern.matcher(string);
-            while(matcher.find()) {
-            }
+        benchmark(abc1, regexKMP, "KMP1");
+        benchmark(abc2, regexKMP, "KMP2");
+        benchmark(abc3, regexKMP, "KMP3");
 
-            long endTime = System.nanoTime();
-            long endMemory = runtime.totalMemory() - runtime.freeMemory();
-
-            toWrite.append(i).append(";").append(endTime - startTime).append(";").append(endMemory - startMemory).append("\n");
-        }
 
         FileWriter myWriter = new FileWriter("results.csv");
         myWriter.write(toWrite.toString());
         myWriter.close();
+    }
+
+    static void benchmark(String text, Pattern pattern, String title) {
+        toWrite.append(title).append("\n");
+
+        for (int i = 0; i < 1000; i++) {
+            long startTime = System.nanoTime();
+
+            Matcher matcher = pattern.matcher(text);
+            while(matcher.find()) {
+            }
+
+            long endTime = System.nanoTime();
+
+            toWrite.append(endTime - startTime).append("\n");
+        }
     }
 }
