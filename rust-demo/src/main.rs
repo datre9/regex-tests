@@ -1,33 +1,37 @@
 use std::fs;
 use regex::Regex;
 use std::time::Instant;
-use memory_stats::memory_stats;
 
+static mut TO_WRITE: String = String::new();
 fn main() {
-    let string = fs::read_to_string("../adventures-of-huckleberry-finn.txt").expect("error");
-    let mut to_write = String::with_capacity(1000 * 30);
-    to_write.push_str("id;time(ns)\n");
-    let pattern = Regex::new("Finn|Huckleberry").unwrap();
-    
-    for i in 0..1000 {
-        let mut mem1 = 0;
-        let mut mem2 = 0;
+    let abc1 = fs::read_to_string("../abc1.txt").expect("error");
+    let abc2 = fs::read_to_string("../abc2.txt").expect("error");
+    let abc3 = fs::read_to_string("../abc3.txt").expect("error");
 
-        if let Some(usage) = memory_stats() {
-            mem1 = usage.physical_mem;
-        }
+    let regexKMP = Regex::new("(ab)+").unwrap();
+    
+
+    benchmark(&abc1, &regexKMP, "KMP1".to_string());
+    benchmark(&abc2, &regexKMP, "KMP2".to_string());
+    benchmark(&abc3, &regexKMP, "KMP3".to_string());
+
+    
+    fs::write("results.csv", unsafe { TO_WRITE.clone() }).expect("error");
+}
+fn benchmark(text:&str, regex:&Regex, title:String) {
+    unsafe { TO_WRITE.push_str(&format!("{}\n", title)) };
+    
+    for _ in 0..1000 {
         let start = Instant::now();
-
-        let _matches: Vec<_> = pattern.find_iter(&string).collect();
-
-        let duration = Instant::now().duration_since(start).as_nanos();
-        if let Some(usage) = memory_stats() {
-            mem2 = usage.physical_mem;
-        }
-        let diff = mem2 - mem1;
     
-        to_write.push_str(&format!("{};{};{}\n", i, duration, diff));    
+        //the original version seems to have significant overhead
+        //probably caused by the memory allocation of the results
+        //this should be in line with the other tests which also don't save the results
+        //let _matches: Vec<_> = regex.find_iter(&text).collect();
+        let _ = regex.find_iter(&text).count();
+    
+        let duration = Instant::now().duration_since(start).as_nanos();
+    
+        unsafe { TO_WRITE.push_str(&format!("{}\n", duration)) };    
     }
-
-    fs::write("results.csv", to_write).expect("error");
 }
