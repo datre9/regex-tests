@@ -4,48 +4,49 @@
 #include <string>
 #include <regex>
 #include <chrono>
-#include <windows.h>
-#include <psapi.h>
 
 using namespace std;
 
-size_t getMemoryUsage() {
-    PROCESS_MEMORY_COUNTERS pmc;
-    if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
-        return pmc.WorkingSetSize;
-    }
-    return 0;
-}
+stringstream toWrite;
 
-int main()
-{
-    ifstream f("../adventures-of-huckleberry-finn.txt");
-    string s;
-    ostringstream ss;
-    ss << f.rdbuf();
-    s = ss.str();
-    f.close();
-    regex pattern("Finn|Huckleberry");
+static void benchmark(const string& text, const regex& regex, const string& title) {
+    toWrite << title << "\n";
 
-    stringstream toWrite;
-    toWrite << "id;time(ns);memory(B)\n";
-
-    for (int i = 0; i < 100; i++) {
-        size_t memoryBefore = getMemoryUsage();
+    for (int i = 0; i < 1000; i++) {
         auto start = chrono::high_resolution_clock::now();
 
-        sregex_iterator begin(s.begin(), s.end(), pattern);
+        sregex_iterator begin(text.begin(), text.end(), regex);
         sregex_iterator end;
         for (auto it = begin; it != end; ++it) {}
 
         auto finish = chrono::high_resolution_clock::now();
-        size_t memoryAfter = getMemoryUsage();
 
         auto elapsed = chrono::duration_cast<chrono::nanoseconds>(finish - start).count();
-        size_t memoryUsed = memoryAfter - memoryBefore;
 
-        toWrite << i << ";" << elapsed << ";" << memoryUsed << "\n";
+        toWrite << elapsed << "\n";
     }
+}
+
+string readFile(const std::string& path) {
+    std::ifstream f(path);
+    std::ostringstream ss;
+    ss << f.rdbuf();
+    return ss.str();
+}
+
+int main()
+{
+    string abc1 = readFile("../abc1.txt");
+    string abc2 = readFile("../abc2.txt");
+    string abc3 = readFile("../abc3.txt");
+
+    regex regexKMP("(ab)+");
+
+
+    benchmark(abc1, regexKMP, "KMP1");
+    benchmark(abc2, regexKMP, "KMP2");
+    benchmark(abc3, regexKMP, "KMP3");
+
 
 	ofstream f2("results.csv");
 	f2 << toWrite.str();
