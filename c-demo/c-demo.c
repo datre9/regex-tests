@@ -9,20 +9,59 @@
 
 char *readFile(char *filename);
 char *stringAppend(char *s1, char *s2);
+void benchmark(char *text, char *regex, char *title);
+
+char *toWrite = "";
 
 int main()
 {
-    char *data = readFile("../adventures-of-huckleberry-finn.txt");
-    char *pattern = "Finn|Huckleberry";
-    char *toWrite = "id;time(ns);memory(B)\n";
+    char *abc1 = readFile("../abc1.txt");
+    char *abc2 = readFile("../abc2.txt");
+    char *abc3 = readFile("../abc3.txt");
+    char *regex = "(ab)+";
+
+
+    benchmark(abc1, regex, "KMP1");
+    benchmark(abc2, regex, "KMP2");
+    benchmark(abc3, regex, "KMP3");
+
+
+    FILE *fptr;
+    fptr = fopen("results.csv", "w");
+    fprintf(fptr, toWrite);
+    fclose(fptr);
+
+    free(toWrite);
+    free(abc1);
+    return 0;
+}
+
+void benchmark(char *text, char *regex, char *title)
+{
+    char *newWrite;
+
+    newWrite = stringAppend(toWrite, title);
+    free(toWrite);
+    toWrite = newWrite;
+    newWrite = stringAppend(toWrite, "\n");
+    free(toWrite);
+    toWrite = newWrite;
+
 
     PCRE2_SIZE offset = 0;
     PCRE2_SIZE *ovector;
     int errorcode;
     PCRE2_SIZE erroroffset;
-    pcre2_code_8 *re = pcre2_compile_8((PCRE2_SPTR8)pattern, PCRE2_ZERO_TERMINATED, 0, &errorcode, &erroroffset, NULL);
+    pcre2_code_8 *re = pcre2_compile_8((PCRE2_SPTR8)regex, PCRE2_ZERO_TERMINATED, 0, &errorcode, &erroroffset, NULL);
+
+    if (!re)
+    {
+        fprintf(stderr, "PCRE2 compilation failed at offset %zu: %d\n", erroroffset, errorcode);
+        exit(1);
+    }
+
     pcre2_match_data_8 *match_data = pcre2_match_data_create_from_pattern_8(re, NULL);
-    int length = strlen(data);
+    int length = strlen(text);
 
     LARGE_INTEGER frequency;
     LARGE_INTEGER start, end;
@@ -33,34 +72,37 @@ int main()
         offset = 0;
 
         QueryPerformanceCounter(&start);
-        while (pcre2_match_8(re, (PCRE2_SPTR8)data, length, offset, 0, match_data, NULL) == 1)
+        while (offset < length)
         {
+            int rc = pcre2_match_8(re, (PCRE2_SPTR8)text, length, offset, 0, match_data, NULL);
+            if (rc < 0)
+            {
+                break;
+            }
+
             ovector = pcre2_get_ovector_pointer_8(match_data);
             offset = ovector[1];
+
+            if (ovector[0] == ovector[1])
+                offset++;
+
         }
         QueryPerformanceCounter(&end);
 
         double time = (double)(end.QuadPart - start.QuadPart) * 1e9 / (double)frequency.QuadPart;
 
         char indexStr[50];
-        sprintf(indexStr, "%d;%.0f;placeholder\n", i, time);
+        sprintf(indexStr, "%.0f\n", time);
 
         char *temp = toWrite;
         toWrite = stringAppend(toWrite, indexStr);
         free(temp);
     }
 
-    FILE *fptr;
-    fptr = fopen("results.csv", "w");
-    fprintf(fptr, toWrite);
-    fclose(fptr);
-
-    free(toWrite);
     pcre2_match_data_free_8(match_data);
     pcre2_code_free_8(re);
-    free(data);
-    return 0;
 }
+
 
 char *stringAppend(char *s1, char *s2)
 {
