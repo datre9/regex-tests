@@ -17,16 +17,15 @@ def benchmark(text, regex, title):
         
         toWrite += f"{endTime - startTime}\n"
 
+def stringFromFile(path) -> str:
+    file_path = os.path.join(os.path.dirname(__file__), path)
+    with open(file_path, "r", encoding="utf-8") as file:
+        return file.read()
 
-file_path = os.path.join(os.path.dirname(__file__), "../abc1.txt")
-with open(file_path, "r", encoding="utf-8") as file:
-    abc1 = file.read()
-file_path = os.path.join(os.path.dirname(__file__), "../abc2.txt")
-with open(file_path, "r", encoding="utf-8") as file:
-    abc2 = file.read()
-file_path = os.path.join(os.path.dirname(__file__), "../abc3.txt")
-with open(file_path, "r", encoding="utf-8") as file:
-    abc3 = file.read()
+
+abc1 = stringFromFile("../abc1.txt")
+abc2 = stringFromFile("../abc2.txt")
+abc3 = stringFromFile("../abc3.txt")
 
 regexKMP = re.compile("(ab)+", 0)
 
