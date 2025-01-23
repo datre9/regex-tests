@@ -21,9 +21,8 @@ static void benchmark(const string& text, const regex& regex, const string& titl
 
         auto finish = chrono::high_resolution_clock::now();
 
-        auto elapsed = chrono::duration_cast<chrono::nanoseconds>(finish - start).count();
-
-        toWrite << elapsed << "\n";
+        double elapsed = chrono::duration_cast<chrono::nanoseconds>(finish - start).count();
+        toWrite << elapsed / 1000000 << "\n";
     }
 }
 
@@ -41,14 +40,34 @@ int main()
     string abc3 = readFile("../abc3.txt");
 
     regex regexKMP("(ab)+");
+    regex regexAC("ac|aca|cab|ab");
+    regex regexSS("(a|b)(b|c)");
+    regex regexWC("a..b..c..");
+    regex regexNE("d");
 
 
     benchmark(abc1, regexKMP, "KMP1");
     benchmark(abc2, regexKMP, "KMP2");
     benchmark(abc3, regexKMP, "KMP3");
 
+    benchmark(abc1, regexAC, "AC1");
+    benchmark(abc2, regexAC, "AC2");
+    benchmark(abc3, regexAC, "AC3");
+    
+    benchmark(abc1, regexSS, "SS1");
+    benchmark(abc2, regexSS, "SS2");
+    benchmark(abc3, regexSS, "SS3");
+    
+    benchmark(abc1, regexWC, "WC1");
+    benchmark(abc2, regexWC, "WC2");
+    benchmark(abc3, regexWC, "WC3");
+    
+    benchmark(abc1, regexNE, "NE1");
+    benchmark(abc2, regexNE, "NE2");
+    benchmark(abc3, regexNE, "NE3");
 
-	ofstream f2("results.csv");
+
+	ofstream f2("c++_results.csv");
 	f2 << toWrite.str();
 	f2.close();
 

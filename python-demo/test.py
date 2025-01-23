@@ -15,7 +15,7 @@ def benchmark(text, regex, title):
         
         endTime = time.time_ns()
         
-        toWrite += f"{endTime - startTime}\n"
+        toWrite += f"{(endTime - startTime) / 1000000}\n"
 
 def stringFromFile(path) -> str:
     file_path = os.path.join(os.path.dirname(__file__), path)
@@ -28,13 +28,33 @@ abc2 = stringFromFile("../abc2.txt")
 abc3 = stringFromFile("../abc3.txt")
 
 regexKMP = re.compile("(ab)+", 0)
+regexAC = re.compile("ac|aca|cab|ab", 0)
+regexSS = re.compile("(a|b)(b|c)", 0)
+regexWC = re.compile("a..b..c..", 0)
+regexNE = re.compile("d", 0)
 
 
 benchmark(abc1, regexKMP, "KMP1")
 benchmark(abc2, regexKMP, "KMP2")
 benchmark(abc3, regexKMP, "KMP3")
 
+benchmark(abc1, regexAC, "AC1")
+benchmark(abc2, regexAC, "AC2")
+benchmark(abc3, regexAC, "AC3")
 
-output_path = os.path.join(os.path.dirname(__file__), "results.csv")
+benchmark(abc1, regexSS, "SS1")
+benchmark(abc2, regexSS, "SS2")
+benchmark(abc3, regexSS, "SS3")
+
+benchmark(abc1, regexWC, "WC1")
+benchmark(abc2, regexWC, "WC2")
+benchmark(abc3, regexWC, "WC3")
+
+benchmark(abc1, regexNE, "NE1")
+benchmark(abc2, regexNE, "NE2")
+benchmark(abc3, regexNE, "NE3")
+
+
+output_path = os.path.join(os.path.dirname(__file__), "python_results.csv")
 with open(output_path, "w") as output:
     output.write(toWrite)

@@ -18,16 +18,36 @@ int main()
     char *abc1 = readFile("../abc1.txt");
     char *abc2 = readFile("../abc2.txt");
     char *abc3 = readFile("../abc3.txt");
-    char *regex = "(ab)+";
 
+    char *regexKMP = "(ab)+";
+    char *regexAC = "ac|aca|cab|ab";
+    char *regexSS = "(a|b)(b|c)";
+    char *regexWC = "a..b..c..";
+    char *regexNE = "d";
 
-    benchmark(abc1, regex, "KMP1");
-    benchmark(abc2, regex, "KMP2");
-    benchmark(abc3, regex, "KMP3");
+    benchmark(abc1, regexKMP, "KMP1");
+    benchmark(abc2, regexKMP, "KMP2");
+    benchmark(abc3, regexKMP, "KMP3");
+
+    benchmark(abc1, regexAC, "AC1");
+    benchmark(abc2, regexAC, "AC2");
+    benchmark(abc3, regexAC, "AC3");
+    
+    benchmark(abc1, regexSS, "SS1");
+    benchmark(abc2, regexSS, "SS2");
+    benchmark(abc3, regexSS, "SS3");
+    
+    benchmark(abc1, regexWC, "WC1");
+    benchmark(abc2, regexWC, "WC2");
+    benchmark(abc3, regexWC, "WC3");
+    
+    benchmark(abc1, regexNE, "NE1");
+    benchmark(abc2, regexNE, "NE2");
+    benchmark(abc3, regexNE, "NE3");
 
 
     FILE *fptr;
-    fptr = fopen("results.csv", "w");
+    fptr = fopen("pcre2_results.csv", "w");
     fprintf(fptr, toWrite);
     fclose(fptr);
 
@@ -92,7 +112,7 @@ void benchmark(char *text, char *regex, char *title)
         double time = (double)(end.QuadPart - start.QuadPart) * 1e9 / (double)frequency.QuadPart;
 
         char indexStr[50];
-        sprintf(indexStr, "%.0f\n", time);
+        sprintf(indexStr, "%.9g\n", (time / 1000000));
 
         char *temp = toWrite;
         toWrite = stringAppend(toWrite, indexStr);
