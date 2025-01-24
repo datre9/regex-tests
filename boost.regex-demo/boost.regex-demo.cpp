@@ -50,10 +50,6 @@ int main()
     benchmark(abc2, regexKMP, "KMP2");
     benchmark(abc3, regexKMP, "KMP3");
 
-    benchmark(abc1, regexKMP, "KMP1");
-    benchmark(abc2, regexKMP, "KMP2");
-    benchmark(abc3, regexKMP, "KMP3");
-
     benchmark(abc1, regexAC, "AC1");
     benchmark(abc2, regexAC, "AC2");
     benchmark(abc3, regexAC, "AC3");

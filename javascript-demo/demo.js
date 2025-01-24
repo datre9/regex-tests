@@ -34,7 +34,7 @@ benchmark(abc2, regexNE, "NE2")
 benchmark(abc3, regexNE, "NE3")
 
 
-fs.writeFileSync('js_output.csv', toWrite)
+fs.writeFileSync('js_results.csv', toWrite)
 
 
 
