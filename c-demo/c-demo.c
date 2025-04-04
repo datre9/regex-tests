@@ -19,11 +19,10 @@ int main()
     char *abc2 = readFile("../abc2.txt");
     char *abc3 = readFile("../abc3.txt");
 
-    char *regexKMP = "(ab)+";
+    char *regexKMP = "abacab";
     char *regexAC = "ac|aca|cab|ab";
     char *regexSS = "(a|b)(b|c)";
     char *regexWC = "a..b..c..";
-    char *regexNE = "d";
 
     benchmark(abc1, regexKMP, "KMP1");
     benchmark(abc2, regexKMP, "KMP2");
@@ -40,10 +39,6 @@ int main()
     benchmark(abc1, regexWC, "WC1");
     benchmark(abc2, regexWC, "WC2");
     benchmark(abc3, regexWC, "WC3");
-    
-    benchmark(abc1, regexNE, "NE1");
-    benchmark(abc2, regexNE, "NE2");
-    benchmark(abc3, regexNE, "NE3");
 
 
     FILE *fptr;

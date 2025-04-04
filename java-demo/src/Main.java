@@ -11,11 +11,10 @@ public class Main {
         String abc2 = GetStringFromFile.getStringFromFile("../abc2.txt");
         String abc3 = GetStringFromFile.getStringFromFile("../abc3.txt");
 
-        Pattern regexKMP = Pattern.compile("(ab)+", 0);
+        Pattern regexKMP = Pattern.compile("abacab", 0);
         Pattern regexAC = Pattern.compile("ac|aca|cab|ab", 0);
         Pattern regexSS = Pattern.compile("(a|b)(b|c)", 0);
         Pattern regexWC = Pattern.compile("a..b..c..", 0);
-        Pattern regexNE = Pattern.compile("d", 0);
 
 
         benchmark(abc1, regexKMP, "KMP1");
@@ -33,10 +32,6 @@ public class Main {
         benchmark(abc1, regexWC, "WC1");
         benchmark(abc2, regexWC, "WC2");
         benchmark(abc3, regexWC, "WC3");
-
-        benchmark(abc1, regexNE, "NE1");
-        benchmark(abc2, regexNE, "NE2");
-        benchmark(abc3, regexNE, "NE3");
 
 
         FileWriter myWriter = new FileWriter("java_results.csv");

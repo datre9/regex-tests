@@ -19,11 +19,10 @@ func main() {
 		fmt.Println(err)
 	}
 
-	regexKMP := regexp.MustCompile("(ab)+")
+	regexKMP := regexp.MustCompile("abacab")
 	regexAC := regexp.MustCompile("ac|aca|cab|ab")
 	regexSS := regexp.MustCompile("(a|b)(b|c)")
 	regexWC := regexp.MustCompile("a..b..c..")
-	regexNE := regexp.MustCompile("d")
 
 	benchmark(abc1, regexKMP, "KMP1")
 	benchmark(abc2, regexKMP, "KMP2")
@@ -40,10 +39,6 @@ func main() {
 	benchmark(abc1, regexWC, "WC1")
 	benchmark(abc2, regexWC, "WC2")
 	benchmark(abc3, regexWC, "WC3")
-
-	benchmark(abc1, regexNE, "NE1")
-	benchmark(abc2, regexNE, "NE2")
-	benchmark(abc3, regexNE, "NE3")
 
 	os.WriteFile("go_results.csv", toWrite.Bytes(), 0644)
 }

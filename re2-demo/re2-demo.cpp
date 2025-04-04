@@ -39,11 +39,10 @@ int main() {
     string abc2 = readFile("../abc2.txt");
     string abc3 = readFile("../abc3.txt");
 
-    RE2 regexKMP("(ab)+");
+    RE2 regexKMP("abacab");
     RE2 regexAC("ac|aca|cab|ab");
     RE2 regexSS("(a|b)(b|c)");
     RE2 regexWC("a..b..c..");
-    RE2 regexNE("d");
 
 
     benchmark(abc1, regexKMP, "KMP1");
@@ -61,10 +60,6 @@ int main() {
     benchmark(abc1, regexWC, "WC1");
     benchmark(abc2, regexWC, "WC2");
     benchmark(abc3, regexWC, "WC3");
-
-    benchmark(abc1, regexNE, "NE1");
-    benchmark(abc2, regexNE, "NE2");
-    benchmark(abc3, regexNE, "NE3");
 
 
     ofstream f2("re2_results.csv");

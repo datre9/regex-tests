@@ -15,11 +15,10 @@ class Program {
 		string abc3 = sr.ReadToEnd();
 		sr.Close();
 
-		Regex regexKMP = new Regex("(ab)+", RegexOptions.Compiled);
+		Regex regexKMP = new Regex("abacab", RegexOptions.Compiled);
 		Regex regexAC = new Regex("ac|aca|cab|ab", RegexOptions.Compiled);
 		Regex regexSS = new Regex("(a|b)(b|c)", RegexOptions.Compiled);
 		Regex regexWC = new Regex("a..b..c..", RegexOptions.Compiled);
-		Regex regexNE = new Regex("d", RegexOptions.Compiled);
 
 
 		Benchmark(abc1, regexKMP, "KMP1");
@@ -29,18 +28,14 @@ class Program {
 		Benchmark(abc1, regexAC, "AC1");
 		Benchmark(abc2, regexAC, "AC2");
 		Benchmark(abc3, regexAC, "AC3");
-		
+
 		Benchmark(abc1, regexSS, "SS1");
 		Benchmark(abc2, regexSS, "SS2");
 		Benchmark(abc3, regexSS, "SS3");
-		
+
 		Benchmark(abc1, regexWC, "WC1");
 		Benchmark(abc2, regexWC, "WC2");
 		Benchmark(abc3, regexWC, "WC3");
-		
-		Benchmark(abc1, regexNE, "NE1");
-		Benchmark(abc2, regexNE, "NE2");
-		Benchmark(abc3, regexNE, "NE3");
 
 
 		StreamWriter sw = new StreamWriter("../../../c#_results.csv");

@@ -39,11 +39,10 @@ int main()
     string abc2 = readFile("../abc2.txt");
     string abc3 = readFile("../abc3.txt");
 
-    regex regexKMP("(ab)+");
+    regex regexKMP("abacab");
     regex regexAC("ac|aca|cab|ab");
     regex regexSS("(a|b)(b|c)");
     regex regexWC("a..b..c..");
-    regex regexNE("d");
 
 
     benchmark(abc1, regexKMP, "KMP1");
@@ -61,10 +60,6 @@ int main()
     benchmark(abc1, regexWC, "WC1");
     benchmark(abc2, regexWC, "WC2");
     benchmark(abc3, regexWC, "WC3");
-    
-    benchmark(abc1, regexNE, "NE1");
-    benchmark(abc2, regexNE, "NE2");
-    benchmark(abc3, regexNE, "NE3");
 
 
 	ofstream f2("c++_results.csv");
